@@ -5,18 +5,11 @@ import {
   removeItem,
   minusItem,
   selectCart,
+  _CartItem,
 } from "../../redux/slices/cartSlice";
 
 type CartProps = {
-  pizza: {
-    id: string;
-    title: string;
-    price: number;
-    imageUrl: string;
-    type: string;
-    size: number;
-    count: number;
-  };
+  pizza: _CartItem;
 };
 
 const CartItem: React.FC<CartProps> = ({ pizza }) => {

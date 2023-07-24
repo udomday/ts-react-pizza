@@ -5,22 +5,22 @@ import Categories from "../components/Categories";
 import Sort, { listSorts } from "../components/Sort";
 import PizzaBlock from "../components/PizzaBlock";
 import Skeleton from "../components/PizzaBlock/Skeleton";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectFilter, setFilters } from "../redux/slices/filterSlice";
+import { FilterSliceState, selectFilter, setFilters } from "../redux/slices/filterSlice";
 import { fetchPizzas, selectPizzas } from "../redux/slices/pizzasSlice";
 import NotFoundBlock from "../components/NotFoundBlock";
+import { useAppDispatch } from "../redux/store";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
   const { items, status } = useSelector(selectPizzas);
 
-  const { categoryId, sortType, currentPage, searchValue } =
-    useSelector(selectFilter);
+  const { categoryId, sortType, currentPage, searchValue } = useSelector(selectFilter);
 
   const getPizzas = async () => {
     const http = `https://649c2ac904807571923799d3.mockapi.io/pizzas?page=${currentPage}&limit=4&${
@@ -30,7 +30,6 @@ const Home: React.FC = () => {
     }`;
 
     dispatch(
-      //@ts-ignore
       fetchPizzas(http)
     );
 
@@ -53,11 +52,14 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-
+      const params = (qs.parse(window.location.search.substring(1))) as FilterSliceState;
       const sortType = listSorts.find((obj) => obj.sort === params.sortType);
+      console.log(params)
+      if(sortType){
+        params.sort = sortType
+      }
 
-      dispatch(setFilters({ ...params, sortType }));
+      dispatch(setFilters(params));
       isSearch.current = true;
     }
   }, []);

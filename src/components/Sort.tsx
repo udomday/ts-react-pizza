@@ -1,17 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectSortType, setSelectedSort } from "../redux/slices/filterSlice";
-
-type SortItem = {
-  title: string;
-  sort: string;
-};
+import { SortItem, selectSortType, setSelectedSort } from "../redux/slices/filterSlice";
 
 export const listSorts: SortItem[] = [
   { title: "популярности", sort: "rating" },
   { title: "цене", sort: "price" },
   { title: "алфавиту", sort: "title" },
 ];
+
+type PopupClick = MouseEvent & {
+  composedPath: () => [] & {
+    includes: (item: HTMLDivElement) => [];
+  };
+}
 
 const Sort: React.FC = () => {
   const [isVisiblePopup, setIsVisiblePopup] = useState(false);
@@ -25,9 +26,9 @@ const Sort: React.FC = () => {
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      const path = event.composedPath();
-      if (!path.includes(sortRef.current)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const _event = event as PopupClick
+      if (sortRef.current && !_event.composedPath().includes(sortRef.current)) {
         setIsVisiblePopup(false);
       }
     };
