@@ -1,20 +1,22 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { SortItem, selectSortType, setSelectedSort } from "../redux/slices/filterSlice";
+import { setSelectedSort } from "../redux/slices/filter/slice";
+import { SortItem, SortPropertyEnum } from "../redux/slices/filter/types";
+import { selectSortType } from "../redux/slices/filter/selectors";
 
 export const listSorts: SortItem[] = [
-  { title: "популярности", sort: "rating" },
-  { title: "цене", sort: "price" },
-  { title: "алфавиту", sort: "title" },
+  { title: "популярности", sortType: SortPropertyEnum.RATING },
+  { title: "цене", sortType: SortPropertyEnum.PRICE },
+  { title: "алфавиту", sortType: SortPropertyEnum.TITLE },
 ];
 
 type PopupClick = MouseEvent & {
   composedPath: () => [] & {
     includes: (item: HTMLDivElement) => [];
   };
-}
+};
 
-const Sort: React.FC = () => {
+export const Sort: React.FC = React.memo(() => {
   const [isVisiblePopup, setIsVisiblePopup] = useState(false);
   const value = useSelector(selectSortType);
   const dispatch = useDispatch();
@@ -27,7 +29,7 @@ const Sort: React.FC = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      const _event = event as PopupClick
+      const _event = event as PopupClick;
       if (sortRef.current && !_event.composedPath().includes(sortRef.current)) {
         setIsVisiblePopup(false);
       }
@@ -66,7 +68,7 @@ const Sort: React.FC = () => {
             {listSorts.map((sort, index) => (
               <li
                 key={index}
-                className={value.sort === sort.sort ? "active" : ""}
+                className={value.sortType === sort.sortType ? "active" : ""}
                 onClick={() => onClickSort(sort)}
               >
                 {sort.title}
@@ -77,6 +79,4 @@ const Sort: React.FC = () => {
       )}
     </div>
   );
-};
-
-export default Sort;
+});

@@ -1,16 +1,18 @@
 import { useSelector, useDispatch } from "react-redux";
-import { selectCategoryId, setSelectedId } from "../redux/slices/filterSlice";
+import { setSelectedId } from "../redux/slices/filter/slice";
+import { selectCategoryId } from "../redux/slices/filter/selectors";
+import { memo } from "react";
 
-const Categories: React.FC = () => {
-  const arrCategories = [
-    "Все",
-    "Мясные",
-    "Вегетарианская",
-    "Гриль",
-    "Острые",
-    "Закрытые",
-  ];
+const arrCategories = [
+  "Все",
+  "Мясные",
+  "Вегетарианская",
+  "Гриль",
+  "Острые",
+  "Закрытые",
+];
 
+export const Categories: React.FC = memo(() => {
   const value = useSelector(selectCategoryId);
   const dispatch = useDispatch();
 
@@ -29,6 +31,4 @@ const Categories: React.FC = () => {
       </ul>
     </div>
   );
-};
-
-export default Categories;
+});

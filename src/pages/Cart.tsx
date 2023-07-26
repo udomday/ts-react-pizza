@@ -1,8 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import CartItem from "../components/CartItem";
-import { clearItems, selectCart } from "../redux/slices/cartSlice";
+import { CartEmpty, CartItem } from "../components";
+import { selectCart } from "../redux/slices/cart/selectors";
+import { clearItems } from "../redux/slices/cart/slice";
 
 type Pizza = {
   id: string;
@@ -17,10 +18,15 @@ type Pizza = {
 const Cart: React.FC = () => {
   const { items, totalPrice } = useSelector(selectCart);
   const dispatch = useDispatch();
-
   const countInCart = items.reduce((sum: number, obj: Pizza) => {
     return obj.count + sum;
   }, 0);
+
+  console.log(items.length);
+
+  if (!items.length) {
+    return <CartEmpty />;
+  }
 
   return (
     <div className="container container--cart">

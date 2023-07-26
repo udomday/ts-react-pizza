@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { addItem, selectCartItemById } from "../../redux/slices/cartSlice";
+import { addItem } from "../../redux/slices/cart/slice";
+import { selectCartItemById } from "../../redux/slices/cart/selectors";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../redux/store";
 
@@ -15,7 +16,7 @@ type PizzaProps = {
   sizes: number[];
 };
 
-const PizzaBlock: React.FC<PizzaProps> = ({
+export const PizzaBlock: React.FC<PizzaProps> = ({
   id,
   imageUrl,
   price,
@@ -104,5 +105,3 @@ const PizzaBlock: React.FC<PizzaProps> = ({
     </div>
   );
 };
-
-export default PizzaBlock;

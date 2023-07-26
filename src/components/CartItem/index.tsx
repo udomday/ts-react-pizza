@@ -1,18 +1,13 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addItem,
-  removeItem,
-  minusItem,
-  selectCart,
-  _CartItem,
-} from "../../redux/slices/cartSlice";
+import { useDispatch } from "react-redux";
+import { addItem, removeItem, minusItem } from "../../redux/slices/cart/slice";
+import { _CartItem } from "../../redux/slices/cart/types";
 
 type CartProps = {
   pizza: _CartItem;
 };
 
-const CartItem: React.FC<CartProps> = ({ pizza }) => {
+export const CartItem: React.FC<CartProps> = ({ pizza }) => {
   const dispatch = useDispatch();
 
   return (
@@ -100,5 +95,3 @@ const CartItem: React.FC<CartProps> = ({ pizza }) => {
     </div>
   );
 };
-
-export default CartItem;

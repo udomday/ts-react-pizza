@@ -1,14 +1,16 @@
 import ReactPaginate from "react-paginate";
 import styles from "./Pagination.modules.scss";
 import { useSelector, useDispatch } from "react-redux";
-import { selectFilter, setSelectedPage } from "../../redux/slices/filterSlice";
+import { setSelectedPage } from "../../redux/slices/filter/slice";
+import { selectFilter } from "../../redux/slices/filter/selectors";
 
-const Pagination: React.FC = () => {
+export const Pagination: React.FC = () => {
   const { currentPage } = useSelector(selectFilter);
   const dispatch = useDispatch();
 
   return (
     <ReactPaginate
+      className={styles}
       breakLabel="..."
       nextLabel=">"
       previousLabel="<"
@@ -20,5 +22,3 @@ const Pagination: React.FC = () => {
     />
   );
 };
-
-export default Pagination;
